@@ -39,6 +39,9 @@
          cd ~
          git clone git@github.com:magicmonty/bash-git-prompt.git .bash-git-prompt --depth=1
 
+		 echo "Updating all vim plugins"
+		 vim +PluginInstall +qall
+
      else
          echo "This script does not appear to be in the proper directory.. PLease clone the repo and run it from the cloned directory."
      fi
