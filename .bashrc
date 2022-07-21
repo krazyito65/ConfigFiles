@@ -2,6 +2,12 @@
 # see /usr/share/doc/bash/examples/startup-files (in the package bash-doc)
 # for examples
 
+
+# [alias]
+#    pr = "!f() { git fetch -fu ${1:-$(git remote |grep ^upstream || echo origin)} refs/pull-requests/$2/from:pr/$2 && git checkout pr/$2; }; f"
+
+
+
 # If not running interactively, don't do anything
 case $- in
     *i*) ;;
