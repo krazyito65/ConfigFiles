@@ -97,10 +97,87 @@ fi
 alias ll='ls -alFh'
 alias la='ls -A'
 alias l='ls -CF'
+# alias wget="curl -O $1"
+alias cdlaunch="cd $HOME/git_repos/launch-ci"
+alias jenkins="ssh 1010-R"
+alias brew="ALL_PROXY=proxy.jpmchase.net:8443 brew"
+alias projects="cd $HOME/git_repos/projects"
+alias ios="cd $HOME/git_repos/projects/DIGITALMOBILE/ios"
+alias android="cd $HOME/git_repos/projects/DIGITALMOBILE/android"
+export PROJECTS="$HOME/git_repos/projects"
+
+alias purge="rm -rfv \
+~/derived_data/ \
+~/Library/Developer/Xcode/DerivedData/ \
+~/.gradle/ \
+~/.m2/ \
+~/swift_package_cache*/ \
+~/Library/Caches/org.swift.swiftpm/ \
+~/Library/org.swift.swiftpm/"
 
 # Add an "alert" alias for long running commands.  Use like so:
 #   sleep 10; alert
 alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
+
+awake(){
+
+    HELP="syntax: awake [on|off]"
+    ERR="INVALID ARG: Must pass exactly 1 arg [on|off]"
+
+    if [ ${#} -ne 1 ] || ([ "${1}" != "on" ] && [ "${1}" != "off" ]);then
+        printf "%s\n\t%s\n" "${HELP}" "${ERR}"
+        return 1
+    fi
+
+    if [ "${1}" = "on" ] && [ -z "$(pgrep caffeinate)" ];then
+        printf "(-‿-)\r"
+        sleep .5
+        printf "(ಠ_ಠ)\r"
+        sleep .3
+        nohup -- /usr/bin/caffeinate -disu &>/dev/null &
+        return 0
+    fi
+
+    if [ "${1}" = "off" ] && [ -n "$(pgrep caffeinate)" ];then
+        printf "(ಠ_ಠ)\r"
+        sleep .5
+        printf "(-‿-)\r"
+        sleep .3
+        kill $(pgrep caffeinate)
+        return 0
+    fi
+}
+
+who_dis(){
+  if [ -z ${1} ];then
+    echo "SID required"
+    exit 1
+  fi
+  curl --silent --url "https://giamid-app.jpmchase.net/idowner/status/sidSearch/?sid=${1}&format=json" | jq
+}
+
+
+proxy_on(){
+    PROXY='http://proxy.jpmchase.net:8443';
+    export http_proxy="${PROXY}";
+    export https_proxy="${PROXY}";
+    export HTTP_PROXY="${PROXY}";
+    export HTTPS_PROXY="${PROXY}";
+    export ALL_PROXY="${PROXY}";
+    export all_proxy="${PROXY}";
+    unset -v PROXY
+    git config --global http.proxy http://proxy.jpmchase.net:10443
+}
+
+proxy_off(){
+    unset -v http_proxy;
+    unset -v https_proxy;
+    unset -v all_proxy;
+    unset -v HTTP_PROXY;
+    unset -v HTTPS_PROXY;
+    unset -v ALL_PROXY
+    git config --global --unset http.proxy
+}
 
 # Alias definitions.
 # You may want to put all your additions into a separate file like
@@ -154,4 +231,22 @@ GIT_PROMPT_END="$ "      # uncomment for custom prompt end sequence
 # GIT_PROMPT_THEME=Solarized # use theme optimized for solarized color scheme
 source ~/.bash-git-prompt/gitprompt.sh
 
-[[ $TERM != "screen" ]] && exec tmux -2
+if [ -f ~/.git-completion.bash ]; then
+    . "$HOME/.git-completion.bash"
+fi
+
+if [ -f ~/.tfl-completion.bash ]; then
+    . "$HOME/.tfl-completion.bash"
+fi
+
+if [ -f ~/.atlas-completion.bash ]; then
+    . "$HOME/.atlas-completion.bash"
+fi
+
+
+
+# source '~/JPMCenv'
+
+# [[ $TERM != "screen" ]] && exec tmux -2
+export PATH="$HOME/bin:$PATH"
+export NUTMEG_PROJECT_PATH="/Users/O778195/git_repos/projects/nutmegdevelopment/nm-ios-app"
