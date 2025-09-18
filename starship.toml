@@ -3,7 +3,7 @@
 
 
 # old style
-format = "\\[${time}\\]-[\\[${username}@${hostname} ${directory}\\]](white) (\\[${git_branch}(|${git_status})\\]) (${python})\n$battery$character$status "
+format = "\\[${time}\\]-[\\[${username}@${hostname} ${directory}\\]](white) (\\[${git_branch} $git_state(|${git_status})\\]) (${python})\n$battery$character$status "
 
 # Inserts a blank line between shell prompts
 
@@ -85,6 +85,10 @@ always_show_remote = true
 [python]
 # format = 'via [${symbol}${pyenv_prefix}(${version} )(\($virtualenv\) )]($style)'
 format = '[${symbol}${pyenv_prefix}(${version} )(\($virtualenv\) )]($style)'
+
+
+[git_state]
+format = '\([$state( $progress_current/$progress_total)]($style)\)'
 
 
 # https://starship.rs/config/#git-status
